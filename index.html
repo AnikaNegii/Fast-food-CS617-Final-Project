@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>It's Not the Burger, It's the Paycheck — CS617 Final Project</title>
+<meta name="ext-resource-dependency" content="data/ma-counties.json" data-resource-id="maCounties" />
+<meta name="ext-resource-dependency" content="data/ma-state.json" data-resource-id="maState" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Caveat:wght@400;600;700&family=Special+Elite&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<template id="__bundler_thumbnail" data-bg-color="#f3ebd8">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#f3ebd8"/>
+    <!-- notebook margin -->
+    <line x1="120" y1="0" x2="120" y2="800" stroke="#d63a3a" stroke-opacity="0.35" stroke-width="2"/>
+    <!-- "BURGER" / "Paycheck" mark -->
+    <text x="200" y="380" font-family="Anton, Impact, sans-serif" font-size="170" fill="#1f1d1a" letter-spacing="-2">BURGER</text>
+    <text x="220" y="530" font-family="Georgia, serif" font-style="italic" font-size="140" fill="#c92a2a">Paycheck</text>
+    <!-- highlight under paycheck -->
+    <rect x="220" y="490" width="560" height="22" fill="#f5d24a" fill-opacity="0.7"/>
+    <text x="220" y="530" font-family="Georgia, serif" font-style="italic" font-size="140" fill="#c92a2a">Paycheck</text>
+    <!-- ampersand-ish -->
+    <text x="200" y="220" font-family="Courier, monospace" font-size="28" fill="#3d3a33" letter-spacing="4">CS 617 · FINAL PROJECT</text>
+    <text x="200" y="640" font-family="Caveat, cursive" font-size="46" fill="#d63a3a">it's not the — it's the —</text>
+  </svg>
+</template>
+
+<!-- ============ Top bar ============ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="mark">It's Not the Burger, It's the Paycheck</div>
+    <div class="meta">
+      <span class="pill">CS 617</span>
+      <span class="pill">Final Project</span>
+      <span class="pill">Spring 2026</span>
+      <span>Ahmed Ahmed · Anika Negi</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Hero ============ -->
+<header class="hero">
+  <div class="tape hero-tape-1"></div>
+  <div class="tape hero-tape-2"></div>
+  <div class="wrap">
+    <div class="hero-row">
+      <div>
+        <span class="stamp">An Interactive Data Essay · 14 MA Counties · 15-yr trends</span>
+        <h1>
+          <span class="it-not">It's not the —</span>
+          <span class="burger">Burger</span>
+          <span class="versus">it's the</span>
+          <span class="paycheck">Paycheck.</span>
+        </h1>
+        <p class="dek">
+          We started by asking whether places with more fast food had higher obesity. After 113 counties' worth of regressions, the answer was… <mark class="hi">not really</mark>. The pattern that did show up was about money. This is what it looks like across the fourteen counties of Massachusetts.
+        </p>
+      </div>
+      <div class="project-card">
+        <div class="row"><span class="k">Course</span><span class="v">CS 617 · Information Viz</span></div>
+        <div class="row"><span class="k">Term</span><span class="v">Spring 2026</span></div>
+        <div class="row"><span class="k">Authors</span><span class="v">A. Ahmed · A. Negi</span></div>
+        <div class="row"><span class="k">Built with</span><span class="v">D3.js · TopoJSON · HTML</span></div>
+        <div class="row"><span class="k">Sample</span><span class="v">113 U.S. counties (5 MA)</span></div>
+        <div class="row"><span class="k">Updated</span><span class="v">May 12, 2026</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">scroll · we drew arrows</div>
+</header>
+
+<!-- ============ Setup ============ -->
+<section class="setup">
+  <div class="wrap">
+    <div class="section-head measure center">
+      <span class="eyebrow">01 · The hypothesis we expected to see</span>
+      <h2>If the amount of fast-food locations were really to blame, the map would show us.</h2>
+    </div>
+    <div class="measure center">
+      <p class="body">
+        Last semester, in a MATH&nbsp;345 statistics project, we drew a random sample of <strong>113 U.S. counties</strong> across all five Census regions. The plan was to pair each county's fast-food restaurants per&nbsp;1,000 residents against its adult obesity rate, fit a regression, and see if there was a clear upward trend.
+      </p>
+      <p class="body">
+        But it actually didn't. The line we got basically showed no correlation. So we kept adding variables which were: <mark class="hi">median income</mark>, <mark class="hi">poverty rate</mark>, demographics. This drew us to a different conclusion. This essay redoes that finding inside Massachusetts and let's the users navigate the data themselves.
+      </p>
+    </div>
+
+    <!-- Two hypothesis cards — the central comparison of the whole essay -->
+    <div class="hypogrid">
+      <article class="hypocard" data-accent="weak">
+        <div class="hypocard-bar"></div>
+        <div class="hypocard-inner">
+          <div class="hypocard-eyebrow">Hypothesis 01 · Weak signal</div>
+          <h3 class="hypocard-title">Fast food → Obesity</h3>
+          <p class="hypocard-narrative"> Small correlation and a big cloud of dots. Nantucket is the obvious outlier with high density, moderate obesity. The slope barely tilts, and slightly the <em>wrong</em> way. There is barely a story here.</p>
+          <div class="hypocard-chart" data-pair="ff"></div>
+          <div class="hypocard-stats">
+            <div class="hcstat"><div class="k">Pearson r</div><div class="v">−0.195</div></div>
+            <div class="hcstat"><div class="k">R²</div><div class="v">0.038</div></div>
+            <div class="hcstat"><div class="k">Original study</div><div class="v">r = 0.45</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="hypocard" data-accent="strong">
+        <div class="hypocard-bar"></div>
+        <div class="hypocard-inner">
+          <div class="hypocard-eyebrow">Hypothesis 02 · Stronger signal</div>
+          <h3 class="hypocard-title">Income → Obesity</h3>
+          <p class="hypocard-narrative">A clear downward slope. Middlesex and Norfolk, the wealthy commuter counties are located at bottom right. Hampden and Berkshire are located at left. The relationship tells us the more obvious story.</p>
+          <div class="hypocard-chart" data-pair="income"></div>
+          <div class="hypocard-stats">
+            <div class="hcstat"><div class="k">Pearson r</div><div class="v">−0.511</div></div>
+            <div class="hcstat"><div class="k">R²</div><div class="v">0.261</div></div>
+            <div class="hcstat"><div class="k">$71k threshold</div><div class="v">70%&nbsp;↑</div></div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="measure center">
+      <p class="callout">In Massachusetts, Nantucket has the <em>most</em> fast-food per capita (1.58 / 1k) and obesity at 27%. Hampden has nearly the <em>least</em> (0.61 / 1k) and obesity at 30%. The amount of fast-foot locations are average across each county.</p>
+      <p class="body" style="text-align:center;font-family:var(--stamp);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:32px">
+        —&nbsp; p&nbsp;=&nbsp;0.003 for poverty as a predictor in the multiple regression on 113 U.S. counties &nbsp;—
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Map module ============ -->
+<section class="map-section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow"> 02 · Steer the map</span>
+      <h2>Three views of <em>the same</em> fourteen counties.</h2>
+      <p class="lede">
+        Switch layers below. Hover for numbers. <strong>Click any county to pin it</strong> Drag the slider to fade out counties below a poverty threshold.
+      </p>
+    </div>
+
+    <div class="map-module">
+      <div class="map-stage" id="map-stage">
+        <div class="stage-head">
+          <div class="stage-title" id="stage-title">Massachusetts — <span class="accent">adult obesity rate</span></div>
+          <div class="stage-sub">14 Counties · CHR 2025 · USDA 2020–2021</div>
+        </div>
+        <svg id="ma-map" role="img" aria-label="Map of Massachusetts counties"></svg>
+        <div class="legend" id="map-legend"></div>
+        <div class="tooltip" id="map-tooltip"></div>
+      </div>
+
+      <div class="map-controls">
+        <div class="toggle-block">
+          <div class="toggle-label">Choropleth layer</div>
+          <div class="layer-toggle" role="tablist">
+            <button class="lt-item is-active" data-layer="obesity">
+              <span class="swatch" style="background:var(--obesity)"></span>
+              <span>
+                <span class="lt-key">Layer A</span>
+                Adult obesity rate
+              </span>
+              <span class="arrow">→</span>
+            </button>
+            <button class="lt-item" data-layer="ff">
+              <span class="swatch" style="background:var(--fastfood)"></span>
+              <span>
+                <span class="lt-key">Layer B</span>
+                Fast-food per 1,000
+              </span>
+              <span class="arrow">→</span>
+            </button>
+            <button class="lt-item" data-layer="income">
+              <span class="swatch" style="background:var(--income)"></span>
+              <span>
+                <span class="lt-key">Layer C</span>
+                Median household income
+              </span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+
+          <div class="slider-block">
+            <div class="slider-title">Fade by poverty rate</div>
+            <div class="slider-sub">Only show counties with poverty ≥ <span id="pov-readout" style="color:var(--red-marker);font-family:var(--mono)">0</span>%</div>
+            <input type="range" id="pov-slider" min="0" max="18" step="0.5" value="0" />
+            <div class="slider-readout"><span>0%</span><span class="v">drag →</span><span>18%</span></div>
+          </div>
+
+          <div class="pin-card empty" id="pin-card">
+            <div class="pin-head">Pinned county <button class="clear" id="clear-pin" style="display:none">CLEAR</button></div>
+            <div class="pin-body">Click a county to pin it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Scatter plot ============ -->
+<section class="scatter-section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow"> 03 · The line that does show up</span>
+      <h2>Where income falls, obesity <em>climbs</em>.</h2>
+      <p class="lede">
+        Each dot is one of Massachusetts's fourteen counties. The dashed line is the fitted regression. <strong>Drag a box on the chart</strong> to highlight those counties on the map above.
+      </p>
+    </div>
+
+    <div class="scatter-module">
+      <div>
+        <p class="body">
+          Bristol, Worcester, and Hampden — three of the lowest-income counties — sit at the top of the obesity axis (32%, 31%, 30%). Norfolk, Middlesex, and Barnstable — three of the highest-income — sit at the bottom (22%, 23%, 24%).
+        </p>
+        <p class="body">
+          Fast-food density, by contrast, varies almost independently of where a county lands on this chart. <strong>Nantucket</strong> has the most fast-food restaurants per capita in the state (1.58 / 1k), and roughly average obesity. <strong>Franklin</strong> has the least (0.46 / 1k), and obesity above the state mean.
+        </p>
+
+        <div class="scatter-stats">
+          <div class="stat">
+            <div class="k">r (MA, n=14)</div>
+            <div class="v neg">−0.51</div>
+            <div class="note">Income vs. obesity. <strong>Moderate negative.</strong> R²&nbsp;=&nbsp;0.26.</div>
+          </div>
+          <div class="stat">
+            <div class="k">r (MA, n=14)</div>
+            <div class="v flat">−0.20</div>
+            <div class="note">Fast food vs. obesity. <strong>Effectively flat</strong>, and slightly the wrong direction.</div>
+          </div>
+        </div>
+
+        <div class="stickynote" style="margin-top:28px;max-width:340px">
+          <span class="pin"></span>
+          NOTE: try a poverty-rate filter in the map controls, the pattern is more apparent!! :D
+        </div>
+      </div>
+
+      <div class="scatter-stage" id="scatter-stage">
+        <div class="stage-head">
+          <h3 class="stage-title">Income × Obesity, MA counties</h3>
+          <span class="stage-axis-lbl">n=14 · dot ∝ √population</span>
+        </div>
+        <svg id="scatter-svg" role="img" aria-label="Scatter plot of income versus obesity"></svg>
+        <div class="scatter-hint">drag a box to highlight counties on the map ↑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Trends 2011–2025 ============ -->
+<section class="trends-section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow"> 04 · Fifteen years of trajectories</span>
+      <h2>The gap isn't shrinking <em>it's widening</em>.</h2>
+      <p class="lede">
+        Each line is one Massachusetts county's adult obesity rate, year by year, from 2011 to 2025. Click a line to isolate it. Toggle below to color by <strong>income tier</strong> the low-income counties tend to stick out.
+      </p>
+    </div>
+
+    <div class="trends-module">
+      <div class="trends-stage" id="trends-stage">
+        <div class="stage-head">
+          <h3 class="stage-title" id="trends-title">Obesity, by county · <span class="accent">2011–2025</span></h3>
+          <div class="boston-toggle" id="trends-color-toggle">
+            <button class="is-active" data-mode="income">Color by income</button>
+            <button data-mode="single">Single color</button>
+          </div>
+        </div>
+        <svg id="trends-svg" role="img" aria-label="Multi-line chart of obesity trends 2011–2025"></svg>
+        <div class="tooltip" id="trends-tip"></div>
+        <div class="scatter-hint">click any line to focus</div>
+      </div>
+
+      <div class="trends-side">
+        <div class="trends-legend" id="trends-legend"></div>
+
+        <div class="deltacard" id="deltacard">
+          <div class="deltacard-head">Biggest 15-yr swings</div>
+          <div class="deltacard-body" id="deltacard-body"></div>
+        </div>
+
+        <div class="stickynote pink" style="max-width:340px">
+          <span class="pin"></span>
+          OBSERVE: Hampden &amp; Worcester (lowest income) added <u>~8 pts</u> since 2011. Middlesex &amp; Norfolk (highest) barely moved. The economic gap is making a difference on public health.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Conclusion ============ -->
+<section class="conclusion">
+  <div class="wrap">
+    <div class="section-head measure center">
+      <span class="eyebrow">§ 05 · What the map is actually showing</span>
+      <h2>The burger is a <em>symptom</em>, not a cause.</h2>
+    </div>
+    <div class="measure center">
+      <p class="body" style="font-size:19px">
+        Fast food is something that can be easily observed. Income, on the other hand, is more of a structural concept. It is simpler to pinpoint a location on a map for the former rather than the latter, which is one reason why the topic that surrounds obesity a lot of the time returns to the topic of fast food restaurants. However, the data which encompasses the 113 counties across the nation, as well as the fourteen counties in Massachusetts from 2011 to 2025 shows a contradictory trend.
+      </p>
+
+      <p class="body" style="font-size:17px">
+        None of this means that having access to healthy food doesn't matter; it does, and any truthful model would take it into account, as well as food deserts. But if you had to choose one factor to predict if a location has higher obesity rates, you'd choose its median household income over the number of fast-food locations. The map already shows where the income goes.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Methodology ============ -->
+<footer class="method">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Appendix · A</span>
+      <h2 style="font-size:44px">Methodology & sources.</h2>
+    </div>
+
+    <div class="method-grid">
+      <div>
+        <div class="group">
+          <h3>Massachusetts dataset</h3>
+          <p>14 counties, joined on FIPS. Obesity % from <strong>County Health Rankings 2025</strong> (measured 2022, BRFSS). Fast-food restaurants per 1,000 residents, median household income, and poverty rate from the <strong>USDA Food Environment Atlas</strong> (2020 / 2021 vintages, noted per column). Trend panel covers 2011–2025 from the same CHR series.</p>
+        </div>
+        <div class="group">
+          <h3>National context</h3>
+          <p>The p-value (0.003) and the 70% / 113-county figure cited in §01 come from our prior MATH 345 statistics project (Negi, Guzman &amp; Leng, Dec 2025), which built a multiple regression of obesity on fast-food density, median income, and poverty rate over a regionally balanced random sample of 113 U.S. counties.</p>
+        </div>
+        <div class="group">
+          <h3>This page</h3>
+          <p>Built in HTML, CSS and vanilla JavaScript with D3.js for choropleth, scatter and trend chart. County geometry from us-atlas (TopoJSON). No chart library defaults — every axis, swatch, and annotation is custom.</p>
+        </div>
+      </div>
+
+      <div>
+        <h3>Datasets & references</h3>
+        <div class="refs">
+          <div class="ref-item"><span class="n">01</span><div><div class="title">County Health Rankings &amp; Roadmaps · 2025</div><div class="src">U. Wisconsin Population Health Institute · countyhealthrankings.org</div></div></div>
+          <div class="ref-item"><span class="n">02</span><div><div class="title">USDA Food Environment Atlas</div><div class="src">ers.usda.gov · fast food, income, poverty (2020–2021)</div></div></div>
+          <div class="ref-item"><span class="n">03</span><div><div class="title">American Community Survey, 5-Year Estimates</div><div class="src">U.S. Census Bureau · data.census.gov · cross-check</div></div></div>
+          <div class="ref-item"><span class="n">04</span><div><div class="title">Behavioral Risk Factor Surveillance System (BRFSS)</div><div class="src">CDC · upstream of CHR obesity estimates</div></div></div>
+          <div class="ref-item"><span class="n">05</span><div><div class="title">Fast Food Restaurants USA</div><div class="src">Datafiniti via Kaggle · cross-check on fast-food counts</div></div></div>
+          <div class="ref-item"><span class="n">06</span><div><div class="title">Prior statistics report (MATH 345)</div><div class="src">Negi, Guzman, Leng — December 2025</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="colophon">
+      <span>CS 617 · Spring 2026 · Final Project</span>
+      <span>Set in Anton · Newsreader · Caveat · Special Elite · JetBrains Mono</span>
+      <span>Built with D3.js · Hosted on GitHub Pages</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
